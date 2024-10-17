@@ -1,6 +1,8 @@
 
+#include <any>
 #include <c1recognizer/syntax_tree_builder.h>
 #include <memory>
+#include <stdexcept>
 
 using namespace c1_recognizer;
 using namespace c1_recognizer::syntax_tree;
@@ -14,7 +16,11 @@ bool is(std::any operand) {
 // Return pointer to the value of std::any object
 template<typename T>
 auto as(std::any operand) {
-    return *(std::any_cast<T>(&operand));
+    auto result = std::any_cast<T>(&operand);
+    if (result == nullptr) {
+        throw std::runtime_error(std::string("bad cast from ") + operand.type().name() + " to " + typeid(T).name());
+    }
+    return *result;
 }
 
 syntax_tree_builder::syntax_tree_builder(error_reporter &_err) : err(_err) {}
