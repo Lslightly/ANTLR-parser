@@ -19,4 +19,4 @@ exp:
     | LeftParen exp RightParen
     | number
 ;
-number: ;
+number: IntConst | FloatConst;
