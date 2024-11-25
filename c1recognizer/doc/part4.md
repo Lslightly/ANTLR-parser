@@ -2,14 +2,14 @@
 
 ---
 
-####任务描述
+#### 任务描述
 
 本关任务: 理解 ANTLR 的分析树（Parse Tree）结构和编程接口，学习并运用访问者（Visitor）设计模式来构造由分析树生成语法树的 Visitor。请：
 1. 理解版本库中`c1recognizer`的整体结构以及编译和运行流程；
 2. 理解 Parse Tree 编程接口和 Visitor 模式，通过编写对 Parse Tree 的 Visitor 来构建 AST；
 3. 完整地编译和测试能生成 AST 的 C1 解析器。
 
-#####任务分解与提交要求
+##### 任务分解与提交要求
 1. 分析本实训项目版本库中`c1recognizer`项目结构的内容，将分析结果记录在`c1recognizer/doc/labAST.md`文件中，分析内容至少需要包括以下几项内容：
    - 对项目编译流程的理解，主要是对`CMakeLists.txt`文件内容的理解；
    - 对项目中的文件组织及结构的理解，说明各个文件的主要用途；
@@ -40,8 +40,8 @@ c1recognizer/scr/syntax_tree_builder.cpp
 
   第一次构建时，运行如下命令：
 ```bash
-cp Libs_for_c1r_ref/libantlr4-runtime.so.4.13.1 /usr/local/lib
-ln -snf /usr/local/lib/libantlr4-runtime.so.4.13.1 /usr/local/lib/libantlr4-runtime.so
+sudo cp Libs_for_c1r_ref/libantlr4-runtime.so.4.13.1 /usr/local/lib
+sudo ln -snf /usr/local/lib/libantlr4-runtime.so.4.13.1 /usr/local/lib/libantlr4-runtime.so
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Debug -DANTLR_EXECUTABLE=/path/to/your/antlr.jar ..
@@ -124,7 +124,7 @@ cd build
 
 - 最后的检查将通过严格比较参考的二进制文件`c1r_ref_static`输出和你的输出来进行评测，请确保你的输出和二进制文件输出一致；
 
-#####问题清单
+##### 问题清单
 
 **AST-Q1 理解访问者**
 
@@ -136,8 +136,8 @@ cd build
 
 - 在`c1recognizer/doc/labAST.md`文件中回答上述问题。
 
-####基本知识
-#####Parse Tree 的结构
+#### 基本知识
+##### Parse Tree 的结构
 
 以`c1recognizer/grammar/C1Parser.g4`生成的`C1Parser.h`（路径为`c1recognizer/build/antlr4cpp_generated_src/C1Parser/C1Parser.h`）为例，这里截取部分代码：
 

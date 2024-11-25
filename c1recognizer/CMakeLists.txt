@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
+project(c1recognizer)
+
 add_definitions(-DFULL_IMPL)
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}

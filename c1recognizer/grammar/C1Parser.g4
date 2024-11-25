@@ -14,8 +14,8 @@ lval: ;
 cond: ;
 exp:
     (Plus | Minus) exp
-    | exp (Multiply | Divide | Modulo) exp
     | exp (Plus | Minus) exp
+    | exp (Multiply | Divide | Modulo) exp
     | LeftParen exp RightParen
     | number
 ;
