@@ -1,3 +1,9 @@
 {
+    // TODO create a new file without `-recommend` suffix and copy the content.
     "C_Cpp.intelliSenseEngine": "disabled",
+    // see https://code.visualstudio.com/docs/cpp/cmake-linux and https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/cmake-settings.md for reference
+    "cmake.configureSettings": {
+        "ANTLR_EXECUTABLE": "/path/to/your/antlr.jar"
+        // "ANTLR_EXECUTABLE": "/usr/local/lib/antlr-4.13.1-complete.jar"
+    }
 }

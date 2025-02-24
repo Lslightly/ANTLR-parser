@@ -1,4 +1,5 @@
 {
+    // TODO create a new file without `-recommend` suffix and copy the content.
     "version": "2.0.0",
     "tasks": [
         {
