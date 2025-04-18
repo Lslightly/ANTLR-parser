@@ -31,7 +31,7 @@
   
 5. 在[`c1recognizer/doc/labLexerParser.md`](./labLexerParser.md)中编写对问题`Lexer-Q1` ~ `Lexer-Q3`的回答，描述实验遇到的问题。
 
-#####问题清单
+##### 问题清单
 
 1. **Lexer-Q1 理解构建步骤**
 
@@ -164,4 +164,13 @@ $ grun C1Lexer tokens -tokens
 
 ANTLR v4 runtime的Java版本有详细的[文档注释](https://www.antlr.org/api/)，可供参考。C++的注释和Java基本一致。
 
-为了方便进行ANTLR的源码分析，你可以使用[antlrcpp-explore.sh](../antlrcpp-explore.sh)脚本(其中提供了详细的注释，请务必理解每一步做的事情)下载构建ANTLR cpp运行时，并配合VSCode clangd语言服务(LSP)插件进行源码的阅读。
+为了方便进行ANTLR的源码分析，你可以使用[antlrcpp-explore.sh](../antlrcpp-explore.sh)脚本(其中提供了详细的注释，请务必理解每一步做的事情)下载构建ANTLR cpp运行时，并配合VSCode clangd语言服务(LSP)插件进行源码的阅读y
+
+你也可以在本项目中通过断点调试，添加[Logpoints](https://code.visualstudio.com/Docs/editor/debugging#_logpoints)的方式查看源码。添加Logpoints之后不需要重新编译项目。为了进行调试，你需要在使用cmake配置项目时配置`CMAKE_BUILD_TYPE`为`Debug`。
+
+```bash
+cmake -B build -DANTLR_EXECUTABLE=/usr/local/lib/antlr-4.13.1-complete.jar -DCMAKE_BUILD_TYPE=Debug
+```
+
+配置完成之后使用`cmake --build build -j 4`构建项目。
+
