@@ -2,7 +2,7 @@
 
 ---
 
-####任务描述
+#### 任务描述
 
 本关任务：阅读理解 C1 语言的 ANTLR 词法描述文件，熟悉 ANTLR 并用它为指定的词法描述文件生成词法分析器源码（Java 程序和 C++ 程序），编译和运行词法分析器。请：
 1. 比较生成的 Java 和 C++ 词法分析器源程序的异同，并比较编译运行过程的异同；
@@ -35,7 +35,7 @@
 
 1. **Lexer-Q1 理解构建步骤**
 
-简述由词法描述文件构建词法分析器并运行该分析器所经过的各个步骤，ANTLR  缺省时生成的分析器源码是哪种语言编写的？
+简述由词法描述文件构建词法分析器并运行该分析器所经过的各个步骤，ANTLR缺省时生成的分析器源码是哪种语言编写的？
 
 2. **Lexer-Q2 理解生成的分析器源码**
 
@@ -45,8 +45,8 @@
 
 若用`c1recognizer/run_lexer.sh`生成 C++ 源码的 C1 词法分析器，请问执行该 C1 词法分析器的`main`函数在哪定义？并请简要说明：[`Lexer::nextToken()`](https://github.com/antlr/antlr4/blob/master/runtime/Cpp/runtime/src/Lexer.cpp#L53)、[`BufferedTokenStream::LA`](https://github.com/antlr/antlr4/blob/master/runtime/Cpp/runtime/src/BufferedTokenStream.cpp#L146)的处理过程。简要说明 `C1Lexer`、[`Lexer`](https://github.com/antlr/antlr4/blob/master/runtime/Cpp/runtime/src/Lexer.cpp)、[`CommonTokenStream`](https://github.com/antlr/antlr4/blob/master/runtime/Cpp/runtime/src/CommonTokenStream.cpp)、[`BufferedTokenStream`](https://github.com/antlr/antlr4/blob/master/runtime/Cpp/runtime/src/BufferedTokenStream.cpp)四者之间的关系。
 
-####相关知识
-#####ANTLR 简介
+#### 相关知识
+##### ANTLR 简介
 
 [ANTLR](http://www.antlr.org/) 是一个基于[`LL(*)`分析方法](http://www.antlr.org/papers/LL-star-PLDI11.pdf)\[[`PLDI 2011`](http://pldi11.cs.utah.edu/)\]、[`Adaptive LL(*)`分析方法](https://dl.acm.org/citation.cfm?id=2660202)\[[`OOPSLA 2014`](https://2014.splashcon.org/)\]的自上而下分析的`LL`解析器的生成工具（`Parser Generator`）。
 
@@ -126,38 +126,42 @@ export CLASSPATH=".:/path/to/your/antlr-4.13.1-complete.jar:$CLASSPATH"
 alias antlr4='java org.antlr.v4.Tool'
 alias grun='java org.antlr.v4.gui.TestRig'
 # Compile grammar to Java source code
-antlr4 *.g4
+antlr4 *.g4 -o ../build
+cd ../build
 # Compile Java source code
 javac *.java
 # Testing lexer
 grun C1Lexer tokens -tokens ../test/test_cases/simple.c1
-# Testing parser
-grun C1 compilationUnit -tree ../test/test_cases/simple.c1
 ```
 这里`simple.c1`是预置的简易测试文件。
+
+你可以通过`grun`命令查看grun的帮助文档，其输出如下所示。你会发现`token`规则名是为lexer使用的，`-tokens`选项可以输出读入的token序列。
+
+```bash
+$ grun
+java org.antlr.v4.gui.TestRig GrammarName startRuleName
+  [-tokens] [-tree] [-gui] [-ps file.ps] [-encoding encodingname]
+  [-trace] [-diagnostics] [-SLL]
+  [input-filename(s)]
+Use startRuleName='tokens' if GrammarName is a lexer grammar.
+Omitting input-filename makes rig read from stdin.
+```
 
 在`grun`的命令中，你也可以不指定输入文件，而采用标准输入流作为输入文本。这时候你需要键入一个`EOF`标志来结束输入（在 Linux 等环境中是`Ctrl-D`）。参考的输出如下：
 
 ```bash
->> grun C1Lexer tokens -tokens ../test/test_cases/simple.c1
-[@0,0:2='int',<'int'>,1:0]
-[@1,4:4='i',<Identifier>,1:4]
-[@2,6:6='=',<'='>,1:6]
-[@3,8:8='0',<IntConst>,1:8]
-[@4,9:9=';',<';'>,1:9]
-[@5,12:15='void',<'void'>,2:0]
-[@6,17:20='main',<Identifier>,2:5]
-[@7,21:21='(',<'('>,2:9]
-[@8,22:22=')',<')'>,2:10]
-[@9,25:25='{',<'{'>,3:0]
-[@10,32:32='i',<Identifier>,4:4]
-[@11,34:34='=',<'='>,4:6]
-[@12,36:36='1',<IntConst>,4:8]
-[@13,37:37=';',<';'>,4:9]
-[@14,40:40='}',<'}'>,5:0]
-[@15,43:42='<EOF>',<EOF>,6:0]
->> 
->> grun C1 compilationUnit -tree ../test/test_cases/simple.c1
-(compilationUnit (decl (vardecl (btype int) (vardef i = (exp (number 0))) ;)) (funcdef void main ( ) (block { (stmt (lval i) = (exp (number 1)) ;) })) <EOF>)
->>
+$ grun C1Lexer tokens -tokens
+1+2*3<换行后输入Ctrl-D>
+[@0,0:0='1',<IntConst>,1:0]
+[@1,1:1='+',<'+'>,1:1]
+[@2,2:2='2',<IntConst>,1:2]
+[@3,3:3='*',<'*'>,1:3]
+[@4,4:4='3',<IntConst>,1:4]
+[@5,6:5='<EOF>',<EOF>,2:0]
 ```
+
+#### ANTLR源码分析
+
+ANTLR v4 runtime的Java版本有详细的[文档注释](https://www.antlr.org/api/)，可供参考。C++的注释和Java基本一致。
+
+为了方便进行ANTLR的源码分析，你可以使用[antlrcpp-explore.sh](../antlrcpp-explore.sh)脚本(其中提供了详细的注释，请务必理解每一步做的事情)下载构建ANTLR cpp运行时，并配合VSCode clangd语言服务(LSP)插件进行源码的阅读。
