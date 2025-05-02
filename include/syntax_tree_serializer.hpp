@@ -221,7 +221,7 @@ class syntax_tree_serializer : public syntax_tree_visitor
         writer.Int(tree.pos);
         writer.Key("body");
         writer.StartArray();
-        for (auto stmt : tree.body)
+        for (auto stmt : tree.stmts)
             stmt->accept(*this);
         writer.EndArray();
         writer.EndObject();
@@ -239,11 +239,11 @@ class syntax_tree_serializer : public syntax_tree_visitor
         writer.Key("pred");
         tree.pred->accept(*this);
         writer.Key("thenbody");
-        tree.then_body->accept(*this);
-        if (tree.else_body)
+        tree.then_stmt->accept(*this);
+        if (tree.else_stmt)
         {
             writer.Key("elsebody");
-            tree.else_body->accept(*this);
+            tree.else_stmt->accept(*this);
         }
         writer.EndObject();
     }
@@ -260,7 +260,7 @@ class syntax_tree_serializer : public syntax_tree_visitor
         writer.Key("pred");
         tree.pred->accept(*this);
         writer.Key("body");
-        tree.body->accept(*this);
+        tree.stmt->accept(*this);
         writer.EndObject();
     }
 

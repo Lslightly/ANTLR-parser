@@ -11,4 +11,4 @@ file(GLOB libantlrcpp_SRC
   "${CMAKE_CURRENT_SOURCE_DIR}/tree/xpath/*.cpp"
 )
 
-add_library(ANTLRRuntime ${libantlrcpp_SRC})
+add_library(ANTLRRuntime SHARED ${libantlrcpp_SRC})

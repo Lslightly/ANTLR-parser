@@ -14,9 +14,9 @@ namespace syntax_tree
 template <typename T>
 using ptr = std::shared_ptr<T>;
 
-// List of reference of type
+// Vector of reference of type
 template <typename T>
-using ptr_list = std::vector<ptr<T>>;
+using ptr_vec = std::vector<ptr<T>>;
 
 // Enumerations
 enum class relop
@@ -70,15 +70,23 @@ struct syntax_tree_visitor;
 // Virtual base of all kinds of syntax tree nodes.
 struct syntax_tree_node
 {
-    int line;
-    int pos;
+    int line; // use getStart()->getLine() to get the value
+    int pos; // use getStart()->getCharPositionInLine() to get the value
     // Used in syntax_tree_visitor. Irrelevant to syntax tree generation.
     virtual void accept(syntax_tree_visitor &visitor) = 0;
     virtual ~syntax_tree_node() {}
+    
+    /**
+     * \brief judge whether the current node is of type T.
+     */
     template<typename T>
     bool is() {
         return dynamic_cast<T>(this) != nullptr;
     }
+    
+    /**
+     * \brief helper method for `dynamic_cast`.
+     */
     template<typename T>
     T as() {
         return dynamic_cast<T>(this);
@@ -88,7 +96,7 @@ struct syntax_tree_node
 // Root node of an ordinary syntax tree.
 struct assembly : syntax_tree_node
 {
-    ptr_list<global_def_syntax> global_defs;
+    ptr_vec<global_def_syntax> global_defs; // collection of global definitions
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
@@ -101,16 +109,16 @@ struct global_def_syntax : virtual syntax_tree_node
 // Function definition.
 struct func_def_syntax : global_def_syntax
 {
-    std::string name;
-    ptr<block_syntax> body;
+    std::string name; // function name
+    ptr<block_syntax> body; // function body
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
 // Condition expression. (Not actually treated as expression, enough for C1)
 struct cond_syntax : syntax_tree_node
 {
-    relop op;
-    ptr<expr_syntax> lhs, rhs;
+    relop op; // relational operator
+    ptr<expr_syntax> lhs, rhs; // left and right hand side operands
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
@@ -123,23 +131,23 @@ struct expr_syntax : virtual syntax_tree_node
 // Expression like `lhs op rhs`.
 struct binop_expr_syntax : expr_syntax
 {
-    binop op;
-    ptr<expr_syntax> lhs, rhs;
+    binop op; // binary operator
+    ptr<expr_syntax> lhs, rhs; // left and right hand side operands
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
 // Expression like `op rhs`.
 struct unaryop_expr_syntax : expr_syntax
 {
-    unaryop op;
-    ptr<expr_syntax> rhs;
+    unaryop op; // unary operator
+    ptr<expr_syntax> rhs; // right hand side operand
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
 // Expression like `ident` or `ident[exp]`.
 struct lval_syntax : expr_syntax
 {
-    std::string name;
+    std::string name; // variable name
     ptr<expr_syntax> array_index; // nullptr if not indexed as array
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
@@ -147,8 +155,8 @@ struct lval_syntax : expr_syntax
 // Expression constructed by a literal number.
 struct literal_syntax : expr_syntax
 {
-    bool is_int;
-    int intConst;
+    bool is_int; // true if integer, false if float
+    int intConst; // use `std::stoi` to convert from string to int
     double floatConst; // use `std::stod` to convert from string to double
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
@@ -163,15 +171,15 @@ struct stmt_syntax : virtual syntax_tree_node
 // represents a single variable definition.
 struct var_def_stmt_syntax : stmt_syntax, global_def_syntax
 {
-    bool is_constant;
-    bool is_int;
-    std::string name;
+    bool is_constant; // true if constant, false if variable
+    bool is_int; // true if integer, false if float
+    std::string name; // variable name
     ptr<expr_syntax> array_length; // nullptr for non-array variables. For `a[]`, you need to fill the `array_length` with the length of the initializer. For the `pos` and `line` of the `array_length` expr_syntax, just assign 0. For `a[exp]`, use the start line and pos of the token of `exp` provided by ANTLR.
-    ptr_list<expr_syntax> initializers;
+    ptr_vec<expr_syntax> initializers; // collection of initializers
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
-// Assignment statement.
+// Assignment statement. target = value
 struct assign_stmt_syntax : stmt_syntax
 {
     ptr<lval_syntax> target;
@@ -189,7 +197,7 @@ struct func_call_stmt_syntax : stmt_syntax
 // Block statement.
 struct block_syntax : stmt_syntax
 {
-    ptr_list<stmt_syntax> body;
+    ptr_vec<stmt_syntax> stmts; // statements in this block
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
@@ -197,8 +205,8 @@ struct block_syntax : stmt_syntax
 struct if_stmt_syntax : stmt_syntax
 {
     ptr<cond_syntax> pred;
-    ptr<stmt_syntax> then_body;
-    ptr<stmt_syntax> else_body;
+    ptr<stmt_syntax> then_stmt;
+    ptr<stmt_syntax> else_stmt;
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
@@ -206,7 +214,7 @@ struct if_stmt_syntax : stmt_syntax
 struct while_stmt_syntax : stmt_syntax
 {
     ptr<cond_syntax> pred;
-    ptr<stmt_syntax> body;
+    ptr<stmt_syntax> stmt;
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 

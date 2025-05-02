@@ -143,6 +143,12 @@ antlrcpp::Any syntax_tree_builder::visitNumber(C1Parser::NumberContext *ctx)
     return VisitResult(result);
 }
 
+/**
+ * \brief 通过visit方法访问解析树结点，得到访问结果VisitResult
+ * 
+ * \param ctx 待被访问的解析树节点
+ * \return VisitResult 可能是语法树结点，也可能是语法树结点的vector
+ */
 VisitResult syntax_tree_builder::operator()(antlr4::tree::ParseTree *ctx)
 {
     // visit(some context) is equivalent to calling corresponding visit 

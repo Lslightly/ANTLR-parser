@@ -33,7 +33,7 @@ c1recognizer/src/recognizer.cpp
 c1recognizer/scr/syntax_tree_builder.cpp
 ```
 
-1. **构建与测试**
+##### 构建与测试
 
 使用VSCode的同学推荐使用插件[clangd](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd)。助教已经在CMakeLists.txt中配置好了相关选项，并添加了`.clangd`的配置文件。在编写好C1Parser.g4的文法文件，使用下述命令make，会在build文件夹下生成compile_commands.json文件。重启vscode之后就可以有自动补全等功能。
 
@@ -42,14 +42,14 @@ c1recognizer/scr/syntax_tree_builder.cpp
 第一次构建时，运行如下命令：
 
 ```bash
-sudo cp Libs_for_c1r_ref/libantlr4-runtime.so.4.13.1 /usr/local/lib
-sudo ln -snf /usr/local/lib/libantlr4-runtime.so.4.13.1 /usr/local/lib/libantlr4-runtime.so
-mkdir build
+cmake -B build -DCMAKE_BUILD_TYPE=Debug -DANTLR_EXECUTABLE=/path/to/your/antlr.jar .
+
+# 以下命令等价于cmake --build build -j
 cd build
-cmake -DCMAKE_BUILD_TYPE=Debug -DANTLR_EXECUTABLE=/path/to/your/antlr.jar ..
-make
+make -j
 ```
-会在build文件夹下生成可执行文件c1r_test。之后如有修改无需重新构建，只需要执行```make -j```即可。
+
+会在build文件夹下生成可执行文件c1r_test。之后如有修改无需重新构建，只需要执行`make -j`即可。
 
 使用你在前面几关编写的测试用例对`c1r_test`程序进行测试。例如:
 
@@ -62,7 +62,7 @@ cd build
 
 > 注意每个结点的line, pos都是该语法规则第一个token的line和start position。
 
-  在你的测试用例下生成的 AST 是正确的情况下，可以使用版本库中名为`c1r_ref_static`的二进制文件作为参考来查看生成的语法树。使用命令 ```./c1r_ref_static < testfile```。
+  在你的测试用例下生成的 AST 是正确的情况下，可以使用版本库中名为`c1r_ref_static`的二进制文件作为参考来查看生成的语法树。使用命令 `./c1r_ref_static < testfile`。
 
 所有环境搭建与命令相关都有在代码库中的README.md中涉及，如有问题，请先查看文档。
 
