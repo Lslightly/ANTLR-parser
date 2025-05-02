@@ -5,5 +5,5 @@
     "cmake.configureSettings": {
         "ANTLR_EXECUTABLE": "/path/to/your/antlr.jar"
         // "ANTLR_EXECUTABLE": "/usr/local/lib/antlr-4.13.1-complete.jar"
-    }
+    },
 }

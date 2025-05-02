@@ -30,6 +30,13 @@ recognizer::~recognizer()
     delete input;
 }
 
+/**
+ * \brief generate syntax tree from input
+ * 
+ * \param _err 
+ * \return true succeed in generating syntax tree
+ * \return false failed to generate syntax tree
+ */
 bool recognizer::execute(error_reporter &_err)
 {
     C1Lexer lexer(input);
@@ -40,7 +47,7 @@ bool recognizer::execute(error_reporter &_err)
     parser.removeErrorListeners();
     parser.addErrorListener(&listener);
 
-    // Change the `exp` to the non-terminal name you want to examine as the top level symbol.
+    // Attention!!! Change the `exp` to the non-terminal name you want to examine as the top level symbol.
     // It should be `compilationUnit` for final submission.
     auto tree = parser.exp();
 
@@ -48,6 +55,6 @@ bool recognizer::execute(error_reporter &_err)
         return false;
 
     syntax_tree_builder ast_builder(_err);
-    ast = ptr<syntax_tree_node>(ast_builder(tree).as<syntax_tree_node*>());
+    ast.reset(ast_builder(tree).as_node<syntax_tree_node*>());
     return true;
 }

@@ -63,7 +63,7 @@ add_library(c1recognizer
 target_link_libraries(c1recognizer ANTLRRuntime)
 
 include_directories(${rapidjson_include_dirs})
-add_executable(c1r_test test/main.cpp)
+add_executable(c1r_test src/main.cpp)
 add_dependencies(c1r_test c1recognizer)
 target_link_libraries(c1r_test c1recognizer)
 

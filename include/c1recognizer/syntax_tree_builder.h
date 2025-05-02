@@ -14,6 +14,8 @@ namespace syntax_tree
 {
 
 /*
+  [variant](https://stanford-cs242.github.io/f19/lectures/03-2-algebraic-data-types#variants)([sum type](https://stanford-cs242.github.io/f19/lectures/03-2-algebraic-data-types#sum-types))
+
   You can add type of visiting result to std::variant<syntax_tree_node*, vector<...>, ...>
 */
 class VisitResult: public std::variant<syntax_tree_node*,
@@ -31,7 +33,7 @@ public:
   }
   
   /**
-   as pointer of syntax tree node type
+    cast to syntax_tree_node* and then cast to the subtype
    */
   template<typename T>
   T as_node() {

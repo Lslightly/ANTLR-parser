@@ -7,7 +7,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/c1r_test",
-            "args": ["<", "test/test_cases/exp/exp.c1"],
+            "args": ["<", "test/exp/exp.c1"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

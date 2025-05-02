@@ -6,8 +6,8 @@ antlr4='java org.antlr.v4.Tool'
 grun='java org.antlr.v4.gui.TestRig'
 
 if [[ $# != 1 ]]; then
-    echo "Usage: ./run.sh java|cpp"
-    echo "Example: cat test/test_cases/simple.c1 | ./run.sh java"
+    echo "Usage: ./run_lexer.sh java|cpp"
+    echo "Example: cat test/demo/simple.c1 | ./run_lexer.sh java"
 fi
 
 rm -rf build
@@ -26,9 +26,7 @@ elif [[ $1 == "cpp" ]]; then
     # uncomment below if you run this file on your machine
     #cp ../Libs_for_c1r_ref/libantlr4-runtime.so.4.13.1 /usr/local/lib/
     #ln -snf /usr/local/lib/libantlr4-runtime.so.4.13.1 /usr/local/lib/libantlr4-runtime.so
-    #g++ -std=c++17 ../test/lexer.cpp C1Lexer.cpp -I../include/antlr4-runtime-4.13.1 -I. -lantlr4-runtime -o c1lexer
-    #./c1lexer
-    g++ -std=c++17 ../test/lexer.cpp C1Lexer.cpp -I../include/antlr4-runtime-4.13.1 -I. -lantlr4-runtime -o c1lexer
+    g++ -std=c++17 ../src/lexer.cpp C1Lexer.cpp -I../src/antlr4-runtime-4.13.1 -I. -lantlr4-runtime -o c1lexer
     ./c1lexer
 fi
 
