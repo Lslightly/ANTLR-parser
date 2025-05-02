@@ -76,7 +76,20 @@ ANTLR 工具需要 JVM 才能执行，此外为了方便使用 ANTLR 的`grun`�
 
   - 同样的，你可以将这些别名命令加入到`.bashrc`，以节省你配置和使用的时间。
 
+## 代码文档生成
+
+项目代码使用 [doxygen](https://www.doxygen.nl/index.html) 代码文档系统。你需要在 [download](https://www.doxygen.nl/download.html) 界面下载相应的二进制并进行配置(如添加PATH等)。
+
+项目根目录下包含 [Doxyfile](../Doxyfile) [配置文件](https://www.doxygen.nl/manual/starting.html)。你可以通过 `doxygen` 在 [doxygen_out](../doxygen_out/) 目录下生成文档。然后用浏览器打开 [index.html](../doxygen_out/html/index.html) 查看文档。
+
+## 关卡文档
+
 四个关卡的文档在[doc](./doc/)目录下。
+- [关卡1](./doc/part1.md)
+- [关卡2](./doc/part2.md)
+- [关卡3](./doc/part3.md)
+- [关卡4](./doc/part4.md)
+
 
 ## 参考
 
